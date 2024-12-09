@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Toggle Element</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+    </style>
+    <style>
+      /* Variables */
+
+      @media screen and (max-width: 768px) {
+        :root {
+          --padding: 24px;
+        }
+      }
+      
+      @media screen and (min-width: 769px) and (max-width: 1536px) {
+        :root {
+          --padding: 36px;
+        }
+      }
+
+      @media screen and (min-width: 1537px) {
+        :root {
+          --padding: 48px;
+        }
+      }
+
+      :root {
+        --base: DodgerBlue;
+        --highlight: #fff;
+        --radius: calc(var(--padding) / 2); 
+        --font-size: calc(var(--radius) * .8);
+      }
+    </style>
+    <style>
+      /* content centering */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
+    <style>
+      /* Toggle Element base styling */
+
+      input[type="radio"] { display: none;}
+
+      * {
+        font-size: var(--font-size);
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Arial, Helvetica, sans-serif, sans-serif;
+        vertical-align: middle;
+        transition: all .3s ease-in-out 0s;
+      }
+
+      .toggle, .toggle-item, .toggle-text, .toggle-bracket-bump {
+        position: relative;
+      }
+
+      .toggle {
+        position: relative;
+        background: var(--base);
+        line-height: var(--radius);
+        border-radius: var(--radius);
+        display: inline-flex;
+        box-shadow: 0px calc(var(--radius) / 4) calc(var(--radius) / 2) 0px color-mix(in srgb, var(--base) 20%, transparent);
+        overflow: hidden;
+      }
+
+      .toggle-text {
+        padding: calc(var(--radius) / 2) var(--radius);
+        color: var(--base);
+        gap: var(--font-size);
+        display: flex;
+        align-items: center;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .toggle svg {
+        height: calc(var(--font-size) * .8);
+        display: none;
+      }
+
+      .toggle-bracket {
+        position: absolute;
+        width: 0;
+        background-color: var(--highlight);
+        height: 100%;
+        transition-delay: .2s !important;
+        display: flex;
+      }
+
+      .toggle-bracket-trigger {
+        flex: 1 0 100%;
+        cursor: pointer;
+      }
+
+      .toggle-bracket-bump {
+        flex: 0 1 var(--radius);
+        width: 0;
+      }
+
+      .toggle-bracket-left {
+        left: 0;
+      }
+
+      .toggle-bracket-right {
+        right: 0;
+        flex-direction: row-reverse;
+      }
+
+      .toggle-bracket-bump:before {
+        position: absolute;
+        content: '';
+        font-size: 0;
+        height: 100%;
+        background-color: var(--base);
+      }
+
+      .toggle-bracket-left .toggle-bracket-bump:before {
+        right: 0;
+        padding-left: var(--radius);
+        border-radius: var(--radius) 0 0 var(--radius);
+      }
+
+      .toggle-bracket-right .toggle-bracket-bump:before {
+        left: 0;
+        padding-right: var(--radius);
+        border-radius: 0 var(--radius) var(--radius) 0;
+      }
+
+      .toggle-bracket-bump {
+        background: var(--base);
+        width: 0;
+      }
+    </style>
+    <style>
+      /* Toggle Element interactive styling */
+
+      input[type="radio"]:nth-child(1):checked ~ .toggle .toggle-item:nth-child(1) svg,
+      input[type="radio"]:nth-child(2):checked ~ .toggle .toggle-item:nth-child(2) svg
+      {
+        display: inline-block;
+      }
+
+      input[type="radio"]:nth-child(1):checked ~ .toggle .toggle-item:nth-child(1) .toggle-text,
+      input[type="radio"]:nth-child(2):checked ~ .toggle .toggle-item:nth-child(2) .toggle-text
+      {
+        color: var(--highlight);
+      }
+      
+      input[type="radio"]:nth-child(1):checked ~ .toggle .toggle-item:nth-child(1):nth-last-child(n+2) .toggle-text,
+      input[type="radio"]:nth-child(2):checked ~ .toggle .toggle-item:nth-child(2):nth-last-child(n+2) .toggle-text
+      {
+        margin-right:calc(-1 * var(--radius));
+      }
+      
+      input[type="radio"]:nth-child(1):checked ~ .toggle .toggle-item:nth-child(1):nth-child(n+2) .toggle-text,
+      input[type="radio"]:nth-child(2):checked ~ .toggle .toggle-item:nth-child(2):nth-child(n+2) .toggle-text
+      {
+        margin-left: calc(-1 * var(--radius));
+      }
+
+      input[type="radio"]:nth-child(1):not(:checked) ~ .toggle .toggle-item:nth-child(1) .toggle-bracket,
+      input[type="radio"]:nth-child(2):not(:checked) ~ .toggle .toggle-item:nth-child(2) .toggle-bracket
+      {
+        width: 100%;
+      }
+
+      input[type="radio"]:nth-child(2):checked ~ .toggle .toggle-item:nth-child(1) .toggle-text
+      {
+        padding-right: var(--padding);
+      }
+
+      input[type="radio"]:nth-child(1):checked ~ .toggle .toggle-item:nth-child(2) .toggle-text
+      {
+        padding-left: var(--padding);
+      }
+    </style>
+  </head>
+  <body>
+    <input type="radio" name="radio-group" id="radio1" value="option1">
+    <input type="radio" name="radio-group" id="radio2" value="option2" checked>
+    <div class="toggle">
+      <div class="toggle-item" data-value="option1">
+        <div class="toggle-bracket toggle-bracket-left">
+          <label class="toggle-bracket-trigger" for="radio1"></label>
+          <div class="toggle-bracket-bump"></div>
+        </div>
+        <div class="toggle-text">
+          <span>First Option</span>
+          <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><polygon points="452.253,28.326 197.831,394.674 29.044,256.875 0,292.469 207.253,461.674 490,54.528 "/></svg>
+        </div>
+      </div>
+      <div class="toggle-item" data-value="option2">
+        <div class="toggle-bracket toggle-bracket-right">
+          <label class="toggle-bracket-trigger" for="radio2"></label>
+          <div class="toggle-bracket-bump"></div>
+        </div>
+        <div class="toggle-text">
+          <span>Second Option</span>
+          <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><polygon points="452.253,28.326 197.831,394.674 29.044,256.875 0,292.469 207.253,461.674 490,54.528 "/></svg>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
